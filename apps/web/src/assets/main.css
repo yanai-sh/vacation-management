@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+@theme static {
+  --font-sans: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --ui-primary: var(--ui-color-primary-600);
+  --ui-secondary: var(--ui-color-secondary-600);
+  --ui-success: var(--ui-color-success-600);
+  --ui-info: var(--ui-color-info-600);
+  --ui-warning: var(--ui-color-warning-600);
+  --ui-error: var(--ui-color-error-600);
+}
+
+/*
+  Dark: lifted canvas (not pitch-black) + clearer elevation steps
+  so cards/inputs read as panels, not outlines on charcoal.
+*/
+.dark {
+  --ui-bg: #161616;
+  --ui-bg-muted: #1c1c1c;
+  --ui-bg-elevated: #2a2a2a;
+  --ui-bg-accented: #3a3a3a;
+
+  --ui-primary: var(--ui-color-primary-400);
+  --ui-secondary: var(--ui-color-secondary-400);
+  --ui-success: var(--ui-color-success-400);
+  --ui-info: var(--ui-color-info-400);
+  --ui-warning: var(--ui-color-warning-400);
+  --ui-error: var(--ui-color-error-400);
+
+  --ui-text-highlighted: #e8e8e8;
+  --ui-text: #d0d0d0;
+  --ui-text-toned: #b0b0b0;
+  --ui-text-muted: #9a9a9a;
+  --ui-text-dimmed: #7a7a7a;
+
+  --ui-border: rgb(255 255 255 / 0.12);
+  --ui-border-muted: rgb(255 255 255 / 0.08);
+  --ui-border-accented: rgb(255 255 255 / 0.18);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-sans);
+  color-scheme: light dark;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Reka copies z-index once, before utilities apply, so the wrapper stays auto.
+   The table separator is z-1 and paints through the calendar. */
+[data-reka-popper-content-wrapper] {
+  z-index: 50 !important;
+}

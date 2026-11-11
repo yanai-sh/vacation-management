@@ -12,11 +12,20 @@
     }
   },
   "scripts": {
+    "dev": "pnpm --filter \"@vacation-management/*\" --parallel --if-present run dev",
+    "build": "pnpm -r --if-present run build",
+    "lint": "pnpm -r --if-present run lint",
+    "lint:fix": "pnpm -r --if-present run lint:fix",
+    "format": "pnpm --filter @vacation-management/web format",
+    "format:check": "pnpm --filter @vacation-management/web format:check",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm -r --if-present run test",
+    "test:watch": "pnpm -r --if-present run test:watch",
+    "setup": "node ./scripts/setup.mjs",
     "db:up": "docker compose up -d",
     "db:down": "docker compose down",
     "db:migrate": "pnpm --filter @vacation-management/api db:migrate",
-    "db:seed": "pnpm --filter @vacation-management/api db:seed",
-    "setup": "node ./scripts/setup.mjs"
+    "db:seed": "pnpm --filter @vacation-management/api db:seed"
   },
   "engines": {
     "node": "^26.0.0"
