@@ -1,14 +1,28 @@
 <script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui'
 import { computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import type { RootState } from '@/store'
 
 const store = useStore<RootState>()
+const route = useRoute()
 const router = useRouter()
 
 const user = computed(() => store.state.auth.user)
 const role = computed(() => user.value?.role)
+
+const navItems = computed<NavigationMenuItem[]>(() => {
+  if (role.value !== 'requester') return []
+  return [
+    {
+      label: 'My requests',
+      icon: 'i-lucide-calendar-plus',
+      to: '/requester',
+      active: route.name === 'requester',
+    },
+  ]
+})
 
 async function logout() {
   await store.dispatch('auth/logout')
@@ -30,6 +44,21 @@ async function logout() {
           </p>
         </div>
         <div class="flex shrink-0 items-center gap-1 sm:gap-2">
+          <UNavigationMenu
+            v-if="navItems.length"
+            :items="navItems"
+            color="primary"
+            variant="pill"
+            class="hidden sm:flex"
+          />
+          <UNavigationMenu
+            v-if="navItems.length"
+            :items="navItems"
+            color="primary"
+            variant="pill"
+            class="sm:hidden"
+            :ui="{ linkLabel: 'sr-only' }"
+          />
           <UColorModeButton size="sm" />
           <UButton
             v-if="user"

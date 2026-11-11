@@ -12,8 +12,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppShell: typeof import('./src/components/AppShell.vue')['default']
+    ConfirmModal: typeof import('./src/components/ConfirmModal.vue')['default']
+    DateRangeField: typeof import('./src/components/DateRangeField.vue')['default']
+    OwnRequestList: typeof import('./src/components/OwnRequestList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StatusBadge: typeof import('./src/components/StatusBadge.vue')['default']
     UAlert: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Alert.vue')['default']
     UApp: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/App.vue')['default']
     UBadge: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Badge.vue')['default']
@@ -21,9 +25,15 @@ declare module 'vue' {
     UCalendar: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Calendar.vue')['default']
     UCard: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Card.vue')['default']
     UColorModeButton: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue')['default']
+    UFieldGroup: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/FieldGroup.vue')['default']
     UForm: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Form.vue')['default']
     UFormField: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/FormField.vue')['default']
+    UIcon: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/vue/components/Icon.vue')['default']
     UInput: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Input.vue')['default']
+    UModal: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Modal.vue')['default']
+    UNavigationMenu: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/NavigationMenu.vue')['default']
     UPopover: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Popover.vue')['default']
+    UTextarea: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Textarea.vue')['default']
+    VacationRequestForm: typeof import('./src/components/VacationRequestForm.vue')['default']
   }
 }
