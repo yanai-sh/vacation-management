@@ -1,6 +1,9 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
+import { User } from './entities/User'
+import { VacationRequest } from './entities/VacationRequest'
 import { InitialFoundation1762800000000 } from './migrations/1762800000000-InitialFoundation'
+import { CreateDomainSchema1762810000000 } from './migrations/1762810000000-CreateDomainSchema'
 
 function requiredEnv(name: string): string {
   const value = process.env[name]
@@ -19,8 +22,8 @@ const AppDataSource = new DataSource({
   database: requiredEnv('POSTGRES_DB'),
   synchronize: false,
   logging: false,
-  entities: [],
-  migrations: [InitialFoundation1762800000000],
+  entities: [User, VacationRequest],
+  migrations: [InitialFoundation1762800000000, CreateDomainSchema1762810000000],
   migrationsTableName: 'typeorm_migrations',
   migrationsRun: false,
 })
