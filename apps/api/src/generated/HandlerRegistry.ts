@@ -18,8 +18,14 @@ export class HandlerRegistry {
 			"handlers/health#getHealth": __cef_handlers_health.getHealth,
 			"handlers/vacations#deleteOwnVacationRequest": __cef_handlers_vacations.deleteOwnVacationRequest,
 			"handlers/vacations#getOwnVacationRequests": __cef_handlers_vacations.getOwnVacationRequests,
+			"handlers/vacations#getRequesterUsers": __cef_handlers_vacations.getRequesterUsers,
+			"handlers/vacations#getValidatorVacationRequests": __cef_handlers_vacations.getValidatorVacationRequests,
 			"handlers/vacations#parseCreateVacationInput": __cef_handlers_vacations.parseCreateVacationInput,
+			"handlers/vacations#parseRejectVacationInput": __cef_handlers_vacations.parseRejectVacationInput,
 			"handlers/vacations#parseVacationIdInput": __cef_handlers_vacations.parseVacationIdInput,
+			"handlers/vacations#parseValidatorVacationRequestsInput": __cef_handlers_vacations.parseValidatorVacationRequestsInput,
+			"handlers/vacations#postApproveVacationRequest": __cef_handlers_vacations.postApproveVacationRequest,
+			"handlers/vacations#postRejectVacationRequest": __cef_handlers_vacations.postRejectVacationRequest,
 			"handlers/vacations#postVacationRequest": __cef_handlers_vacations.postVacationRequest,
 		});
 	}

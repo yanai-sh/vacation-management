@@ -72,3 +72,38 @@ paths:
       responses:
         '200':
           description: Cancelled
+
+  /validator/vacation-requests:
+    get:
+      x-handler: handlers/vacations#getValidatorVacationRequests
+      x-inputParser: handlers/vacations#parseValidatorVacationRequestsInput
+      summary: List all vacation requests with filters and pagination
+      responses:
+        '200':
+          description: Paginated list
+
+  /validator/vacation-requests/:id/approve:
+    post:
+      x-handler: handlers/vacations#postApproveVacationRequest
+      x-inputParser: handlers/vacations#parseVacationIdInput
+      summary: Approve a pending vacation request
+      responses:
+        '200':
+          description: Approved
+
+  /validator/vacation-requests/:id/reject:
+    post:
+      x-handler: handlers/vacations#postRejectVacationRequest
+      x-inputParser: handlers/vacations#parseRejectVacationInput
+      summary: Reject a pending vacation request
+      responses:
+        '200':
+          description: Rejected
+
+  /validator/users:
+    get:
+      x-handler: handlers/vacations#getRequesterUsers
+      summary: List requesters for validator filters
+      responses:
+        '200':
+          description: User list

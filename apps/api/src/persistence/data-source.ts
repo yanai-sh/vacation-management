@@ -7,6 +7,7 @@ import { CreateDomainSchema1762810000000 } from './migrations/1762810000000-Crea
 import { AddOverlapExclusion1762820000000 } from './migrations/1762820000000-AddOverlapExclusion'
 import { AllowOneDayStay1762830000000 } from './migrations/1762830000000-AllowOneDayStay'
 import { RequireEndAfterStart1762840000000 } from './migrations/1762840000000-RequireEndAfterStart'
+import { AddValidatorListIndexes1762850000000 } from './migrations/1762850000000-AddValidatorListIndexes'
 
 function requiredEnv(name: string): string {
   const value = process.env[name]
@@ -32,6 +33,7 @@ const AppDataSource = new DataSource({
     AddOverlapExclusion1762820000000,
     AllowOneDayStay1762830000000,
     RequireEndAfterStart1762840000000,
+    AddValidatorListIndexes1762850000000,
   ],
   migrationsTableName: 'typeorm_migrations',
   migrationsRun: false,

@@ -1,10 +1,12 @@
 import type { EntityManager, FindOptionsWhere } from 'typeorm'
 import { In, LessThanOrEqual, MoreThanOrEqual, Not } from 'typeorm'
 import { AppError } from './errors'
-import { assertCalendarDate, assertDateOrder, assertNotInPast } from './dateRules'
+import { assertCalendarDate, assertDateOrder, assertNotInPast, assertRejectComment } from './dateRules'
 import AppDataSource from '../persistence/data-source'
+import { User } from '../persistence/entities/User'
 import {
   VacationRequest,
+  type VacationStatus,
 } from '../persistence/entities/VacationRequest'
 import type { AuthUser } from '../security/auth'
 
@@ -95,6 +97,78 @@ export async function listOwnVacationRequests(auth: AuthUser) {
   return items.map(serialize)
 }
 
+export async function listValidatorVacationRequests(input: {
+  status?: VacationStatus
+  userId?: number
+  page: number
+  pageSize: number
+}) {
+  const repo = AppDataSource.getRepository(VacationRequest)
+
+  const where: FindOptionsWhere<VacationRequest> = {}
+  if (input.status) {
+    where.status = input.status
+  }
+  if (input.userId !== undefined) {
+    where.userId = input.userId
+  }
+
+  const [items, total] = await repo.findAndCount({
+    where,
+    relations: { user: true },
+    order: { createdAt: 'DESC' },
+    skip: (input.page - 1) * input.pageSize,
+    take: input.pageSize,
+  })
+
+  return {
+    items: items.map(serialize),
+    total,
+    page: input.page,
+    pageSize: input.pageSize,
+  }
+}
+
+export async function approveVacationRequest(id: number) {
+  return AppDataSource.transaction(async (manager) => {
+    const repo = manager.getRepository(VacationRequest)
+    const request = await repo.findOne({ where: { id }, relations: { user: true } })
+    if (!request) {
+      throw new AppError('Vacation request not found', 404)
+    }
+    if (request.status !== 'pending') {
+      throw new AppError('Only pending requests can be approved', 409)
+    }
+
+    await assertNoOverlap(manager, request.userId, request.startDate, request.endDate, request.id)
+
+    request.status = 'approved'
+    const saved = await repo.save(request)
+    saved.user = request.user
+    return serialize(saved)
+  })
+}
+
+export async function rejectVacationRequest(id: number, comment: string) {
+  assertRejectComment(comment)
+  const trimmed = comment.trim()
+
+  const repo = AppDataSource.getRepository(VacationRequest)
+  const request = await repo.findOne({ where: { id }, relations: { user: true } })
+  if (!request) {
+    throw new AppError('Vacation request not found', 404)
+  }
+  if (request.status !== 'pending') {
+    throw new AppError('Only pending requests can be rejected', 409)
+  }
+
+  request.status = 'rejected'
+  request.comments = trimmed
+  const saved = await repo.save(request)
+  saved.user = request.user
+  return serialize(saved)
+}
+
 export async function cancelOwnPendingRequest(auth: AuthUser, id: number) {
   if (auth.role !== 'requester') {
     throw new AppError('Forbidden', 403)
@@ -111,4 +185,12 @@ export async function cancelOwnPendingRequest(auth: AuthUser, id: number) {
 
   await repo.remove(request)
   return { ok: true }
+}
+
+export async function listUsersForFilters() {
+  const users = await AppDataSource.getRepository(User).find({
+    where: { role: 'requester' },
+    order: { name: 'ASC' },
+  })
+  return users.map((u) => ({ id: u.id, name: u.name, email: u.email, role: u.role }))
 }
