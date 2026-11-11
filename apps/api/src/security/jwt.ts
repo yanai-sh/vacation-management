@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import type { UserRole } from '../persistence/entities/User'
+import type { UserRole } from '../domain'
 import { AppError } from '../application/errors'
 
 export interface AuthTokenPayload {

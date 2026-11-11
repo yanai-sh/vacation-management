@@ -152,7 +152,10 @@ watch(open, (isOpen, wasOpen) => {
       <span v-if="dayLabel" class="ml-auto shrink-0 text-muted">{{ dayLabel }}</span>
     </UButton>
     <template #content>
-      <div class="w-max max-w-[calc(100vw-2rem)] overflow-x-auto p-3">
+      <!-- Popper sets --reka-popper-available-height. Cap to it so a second month can be scrolled to on a phone. -->
+      <div
+        class="max-h-[var(--reka-popper-available-height)] w-max max-w-[min(calc(100vw-2rem),var(--reka-popper-available-width,100vw))] overflow-auto p-3"
+      >
         <!-- Fixed day size: w-full inside a 7-column grid collapses both months. -->
         <UCalendar
           v-model="range"

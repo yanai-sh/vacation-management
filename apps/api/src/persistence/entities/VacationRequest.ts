@@ -7,9 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import type { VacationStatus } from '../../domain'
 import { User } from './User'
-
-export type VacationStatus = 'pending' | 'approved' | 'rejected'
 
 @Entity({ name: 'vacation_requests' })
 export class VacationRequest {

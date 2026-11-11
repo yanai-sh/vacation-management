@@ -5,9 +5,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import type { UserRole } from '../../domain'
 import { VacationRequest } from './VacationRequest'
-
-export type UserRole = 'requester' | 'validator'
 
 @Entity({ name: 'users' })
 export class User {

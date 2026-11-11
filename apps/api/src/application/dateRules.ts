@@ -44,3 +44,18 @@ export function assertRejectComment(comment: string) {
     throw new AppError('A rejection comment is required', 400)
   }
 }
+
+export function assertPendingStatus(status: string, action: 'approved' | 'rejected' | 'cancelled') {
+  if (status === 'approved') {
+    throw new AppError('Approved requests cannot be modified', 409)
+  }
+  if (status !== 'pending') {
+    throw new AppError(`Only pending requests can be ${action}`, 409)
+  }
+}
+
+export function assertValidatorRole(role: string) {
+  if (role !== 'validator') {
+    throw new AppError('Only validators can approve or reject requests', 403)
+  }
+}

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
-import { computed, shallowReactive, useTemplateRef, watch } from 'vue'
+import { computed, shallowReactive, useTemplateRef } from 'vue'
 import DateRangeField from '@/components/DateRangeField.vue'
 import type { VacationStatus } from '@/types'
 import { formatStay, localToday, toIsoDate } from '@/utils/dates'
@@ -44,18 +44,11 @@ function validate(formState: Partial<VacationFormState>) {
   return errors
 }
 
-watch(
-  () => props.existing,
-  () => {
-    if (!state.startDate || !state.endDate) return
-    void datesForm.value?.validate().catch(() => undefined)
-  },
-)
-
 function reset() {
   state.startDate = undefined
   state.endDate = undefined
   state.reason = ''
+  datesForm.value?.clear()
 }
 
 function onSubmit(event: FormSubmitEvent<VacationFormState>) {

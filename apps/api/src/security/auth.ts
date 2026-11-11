@@ -1,6 +1,6 @@
 import type { CommonEvent } from 'commoneventframework/dist/types/commonEvent'
 import { AppError } from '../application/errors'
-import type { UserRole } from '../persistence/entities/User'
+import type { UserRole } from '../domain'
 import { verifyAuthToken, type AuthTokenPayload } from './jwt'
 
 export type AuthUser = AuthTokenPayload

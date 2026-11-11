@@ -10,18 +10,30 @@ import {
   listValidatorVacationRequests,
   rejectVacationRequest,
 } from '../application/vacationService'
+import type { VacationStatus } from '../domain'
 import { requireAuth, requireRole } from '../security/auth'
-import type { VacationStatus } from '../persistence/entities/VacationRequest'
 import { parseJsonBody } from './parseBody'
 import type { HandlerFn, InputParserFn } from './types'
 
+const POSITIVE_INT = /^[1-9]\d*$/
+
+function parsePositiveInt(raw: string, error: string): number | Response {
+  if (!POSITIVE_INT.test(raw)) {
+    return new Response(400, { error })
+  }
+  const value = Number(raw)
+  if (!Number.isSafeInteger(value)) {
+    return new Response(400, { error })
+  }
+  return value
+}
+
 function parseId(event: CommonEvent): number | Response {
   const raw = event.pathParameters?.id
-  const id = Number(raw)
-  if (!raw || !Number.isInteger(id) || id <= 0) {
+  if (!raw) {
     return new Response(400, { error: 'Invalid request id' })
   }
-  return id
+  return parsePositiveInt(raw, 'Invalid request id')
 }
 
 export const parseCreateVacationInput: InputParserFn = (event) => {
@@ -79,11 +91,23 @@ const VALID_STATUSES: readonly VacationStatus[] = ['pending', 'approved', 'rejec
 export const parseValidatorVacationRequestsInput: InputParserFn = (event) => {
   const statusRaw = event.queryStringParameters?.status
   const userIdRaw = event.queryStringParameters?.userId
-  const page = Math.max(1, Number(event.queryStringParameters?.page ?? 1) || 1)
-  const pageSize = Math.min(
-    50,
-    Math.max(1, Number(event.queryStringParameters?.pageSize ?? 10) || 10),
-  )
+  const pageRaw = event.queryStringParameters?.page
+  const pageSizeRaw = event.queryStringParameters?.pageSize
+  const page =
+    pageRaw === undefined || pageRaw === ''
+      ? 1
+      : parsePositiveInt(pageRaw, 'page must be a positive integer')
+  if (page instanceof Response) {
+    return page
+  }
+  const parsedPageSize =
+    pageSizeRaw === undefined || pageSizeRaw === ''
+      ? 10
+      : parsePositiveInt(pageSizeRaw, 'pageSize must be a positive integer')
+  if (parsedPageSize instanceof Response) {
+    return parsedPageSize
+  }
+  const pageSize = Math.min(50, parsedPageSize)
 
   let status: VacationStatus | undefined
   if (statusRaw) {
@@ -95,10 +119,11 @@ export const parseValidatorVacationRequestsInput: InputParserFn = (event) => {
 
   let userId: number | undefined
   if (userIdRaw) {
-    userId = Number(userIdRaw)
-    if (!Number.isInteger(userId) || userId <= 0) {
-      return new Response(400, { error: 'Invalid userId filter' })
+    const parsedUserId = parsePositiveInt(userIdRaw, 'Invalid userId filter')
+    if (parsedUserId instanceof Response) {
+      return parsedUserId
     }
+    userId = parsedUserId
   }
 
   return { status, userId, page, pageSize }
@@ -117,8 +142,8 @@ export const getValidatorVacationRequests: HandlerFn = async (input, event) => {
 }
 
 export const postApproveVacationRequest: HandlerFn = async (input, event) => {
-  requireRole(event, ['validator'])
-  return approveVacationRequest((input as { id: number }).id)
+  const auth = requireRole(event, ['validator'])
+  return approveVacationRequest(auth, (input as { id: number }).id)
 }
 
 export const parseRejectVacationInput: InputParserFn = (event) => {
@@ -141,9 +166,9 @@ export const parseRejectVacationInput: InputParserFn = (event) => {
 }
 
 export const postRejectVacationRequest: HandlerFn = async (input, event) => {
-  requireRole(event, ['validator'])
+  const auth = requireRole(event, ['validator'])
   const { id, comment } = input as { id: number; comment: string }
-  return rejectVacationRequest(id, comment)
+  return rejectVacationRequest(auth, id, comment)
 }
 
 export const getTeamVacationRequests: HandlerFn = async (_input, event) => {

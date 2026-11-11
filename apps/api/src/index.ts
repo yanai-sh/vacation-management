@@ -18,22 +18,7 @@ import type { CommonEvent, LambdaEvent } from 'commoneventframework/dist/types/c
 import { isAppError } from './application/errors'
 import type { HandlerFn, InputParserFn } from './handlers/types'
 import { ensureDatabaseInitialized } from './persistence/database'
-
-function isOverlapExclusion(err: unknown): boolean {
-  if (!err || typeof err !== 'object') return false
-  const error = err as {
-    code?: unknown
-    constraint?: unknown
-    where?: unknown
-    driverError?: { code?: unknown; constraint?: unknown; where?: unknown }
-  }
-  const code = error.driverError?.code ?? error.code
-  const constraint = error.driverError?.constraint ?? error.constraint
-  const where = String(error.driverError?.where ?? error.where ?? '')
-  if (code === '23P01' && constraint === 'vacation_requests_no_overlap') return true
-  // Two inserts can deadlock while Postgres checks the same exclusion constraint.
-  return code === '40P01' && where.includes('exclusion constraint') && where.includes('vacation_requests')
-}
+import { vacationConstraintResponse } from './persistence/overlapError'
 
 export const handler = async (
   event: LambdaEvent,
@@ -80,10 +65,9 @@ export const handler = async (
     if (isAppError(err)) {
       return new Response(err.statusCode, { error: err.message })
     }
-    if (isOverlapExclusion(err)) {
-      return new Response(409, {
-        error: 'Vacation request overlaps an existing pending or approved request',
-      })
+    const constraintError = vacationConstraintResponse(err)
+    if (constraintError) {
+      return new Response(constraintError.statusCode, { error: constraintError.error })
     }
     console.error('handler error', err)
     return new Response(500, { error: 'Internal server error' })
