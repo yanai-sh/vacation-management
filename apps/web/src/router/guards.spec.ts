@@ -41,7 +41,7 @@ describe('route guards', () => {
 
   it('sends a validator from login to the review page', async () => {
     const router = await signedIn('validator')
-    await router.push('/validator')
+    await router.push('/team')
     await router.push('/login')
     expect(router.currentRoute.value.name).toBe('validator')
   })
@@ -62,6 +62,16 @@ describe('route guards', () => {
     const router = await signedIn('requester')
     await router.push('/validator')
     expect(router.currentRoute.value.name).toBe('requester')
+  })
+
+  it('lets either role open the team page', async () => {
+    const requester = await signedIn('requester')
+    await requester.push('/team')
+    expect(requester.currentRoute.value.name).toBe('team')
+
+    const validator = await signedIn('validator')
+    await validator.push('/team')
+    expect(validator.currentRoute.value.name).toBe('team')
   })
 
   it('does not treat a token without a profile as a session', async () => {

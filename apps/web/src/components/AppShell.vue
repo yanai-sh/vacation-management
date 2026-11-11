@@ -30,6 +30,14 @@ const navItems = computed<NavigationMenuItem[]>(() => {
       active: route.name === 'validator',
     })
   }
+  if (user.value) {
+    items.push({
+      label: 'Team',
+      icon: 'i-lucide-users',
+      to: '/team',
+      active: route.name === 'team',
+    })
+  }
   return items
 })
 

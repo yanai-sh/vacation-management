@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import LoginView from '@/views/LoginView.vue'
 import RequesterView from '@/views/RequesterView.vue'
+import TeamView from '@/views/TeamView.vue'
 import ValidatorView from '@/views/ValidatorView.vue'
 import type { UserRole } from '@/types'
 
@@ -32,6 +33,12 @@ const router = createRouter({
       name: 'validator',
       component: ValidatorView,
       meta: { roles: ['validator'] },
+    },
+    {
+      path: '/team',
+      name: 'team',
+      component: TeamView,
+      meta: { roles: ['requester', 'validator'] },
     },
     {
       path: '/',

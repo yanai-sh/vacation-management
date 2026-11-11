@@ -5,11 +5,12 @@ import {
   cancelOwnPendingRequest,
   createVacationRequest,
   listOwnVacationRequests,
+  listTeamVacationRequests,
   listUsersForFilters,
   listValidatorVacationRequests,
   rejectVacationRequest,
 } from '../application/vacationService'
-import { requireRole } from '../security/auth'
+import { requireAuth, requireRole } from '../security/auth'
 import type { VacationStatus } from '../persistence/entities/VacationRequest'
 import { parseJsonBody } from './parseBody'
 import type { HandlerFn, InputParserFn } from './types'
@@ -143,6 +144,12 @@ export const postRejectVacationRequest: HandlerFn = async (input, event) => {
   requireRole(event, ['validator'])
   const { id, comment } = input as { id: number; comment: string }
   return rejectVacationRequest(id, comment)
+}
+
+export const getTeamVacationRequests: HandlerFn = async (_input, event) => {
+  requireAuth(event)
+  const items = await listTeamVacationRequests()
+  return { items }
 }
 
 export const getRequesterUsers: HandlerFn = async (_input, event) => {

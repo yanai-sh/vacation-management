@@ -5,6 +5,7 @@ import {
   createRequest,
   fetchOwnRequests,
   fetchRequesterUsers,
+  fetchTeamRequests,
   fetchValidatorRequests,
   rejectRequest,
 } from '@/api/vacations'
@@ -17,6 +18,7 @@ let validatorLoad = 0
 export interface VacationsState {
   ownItems: VacationRequest[]
   validatorItems: VacationRequest[]
+  teamItems: VacationRequest[]
   requesterUsers: User[]
   total: number
   page: number
@@ -32,6 +34,7 @@ export const vacationsModule: Module<VacationsState, RootState> = {
   state: (): VacationsState => ({
     ownItems: [],
     validatorItems: [],
+    teamItems: [],
     requesterUsers: [],
     total: 0,
     page: 1,
@@ -48,6 +51,9 @@ export const vacationsModule: Module<VacationsState, RootState> = {
     setValidatorItems(state, payload: { items: VacationRequest[]; total: number }) {
       state.validatorItems = payload.items
       state.total = payload.total
+    },
+    setTeamItems(state, items: VacationRequest[]) {
+      state.teamItems = items
     },
     setRequesterUsers(state, users: User[]) {
       state.requesterUsers = users
@@ -120,6 +126,14 @@ export const vacationsModule: Module<VacationsState, RootState> = {
     async reject({ dispatch }, payload: { id: number; comment: string }) {
       await rejectRequest(payload.id, payload.comment)
       await dispatch('loadValidator')
+    },
+    async loadTeam({ commit }) {
+      commit('setLoading', true)
+      try {
+        commit('setTeamItems', await fetchTeamRequests())
+      } finally {
+        commit('setLoading', false)
+      }
     },
   },
 }

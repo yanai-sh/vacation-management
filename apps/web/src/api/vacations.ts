@@ -51,6 +51,11 @@ export async function rejectRequest(id: number, comment: string) {
   return data
 }
 
+export async function fetchTeamRequests() {
+  const { data } = await apiClient.get<{ items: VacationRequest[] }>('/team/vacation-requests')
+  return data.items
+}
+
 export async function fetchRequesterUsers() {
   const { data } = await apiClient.get<{ items: User[] }>('/validator/users')
   return data.items

@@ -16,6 +16,7 @@ declare module 'vue' {
     DateRangeField: typeof import('./src/components/DateRangeField.vue')['default']
     OwnRequestList: typeof import('./src/components/OwnRequestList.vue')['default']
     RejectModal: typeof import('./src/components/RejectModal.vue')['default']
+    RequestTable: typeof import('./src/components/RequestTable.vue')['default']
     ReviewQueue: typeof import('./src/components/ReviewQueue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -37,6 +38,7 @@ declare module 'vue' {
     UPagination: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Pagination.vue')['default']
     UPopover: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Popover.vue')['default']
     USelect: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Select.vue')['default']
+    UTable: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Table.vue')['default']
     UTextarea: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Textarea.vue')['default']
     VacationRequestForm: typeof import('./src/components/VacationRequestForm.vue')['default']
   }

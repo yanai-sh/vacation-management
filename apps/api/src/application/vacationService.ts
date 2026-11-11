@@ -169,6 +169,15 @@ export async function rejectVacationRequest(id: number, comment: string) {
   return serialize(saved)
 }
 
+export async function listTeamVacationRequests() {
+  const items = await AppDataSource.getRepository(VacationRequest).find({
+    where: { status: In(['pending', 'approved']) },
+    relations: { user: true },
+    order: { startDate: 'ASC' },
+  })
+  return items.map(serialize)
+}
+
 export async function cancelOwnPendingRequest(auth: AuthUser, id: number) {
   if (auth.role !== 'requester') {
     throw new AppError('Forbidden', 403)

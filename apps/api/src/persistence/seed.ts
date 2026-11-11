@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import { In, Not } from 'typeorm'
 import AppDataSource from './data-source'
 import { User } from './entities/User'
 import { VacationRequest } from './entities/VacationRequest'
@@ -31,6 +32,21 @@ async function upsertUser(input: {
   return repo.save(user)
 }
 
+function isoDaysFromToday(days: number): string {
+  const date = new Date()
+  date.setDate(date.getDate() + days)
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
+}
+
+function stay(startOffset: number, days: number) {
+  return {
+    startDate: isoDaysFromToday(startOffset),
+    endDate: isoDaysFromToday(startOffset + days - 1),
+  }
+}
+
 async function main() {
   await AppDataSource.initialize()
 
@@ -50,30 +66,53 @@ async function main() {
     role: 'requester',
   })
 
-  const requests = AppDataSource.getRepository(VacationRequest)
-  const existing = await requests.count({ where: { userId: alice.id } })
-  if (existing === 0) {
-    const start = new Date()
-    start.setUTCDate(start.getUTCDate() + 14)
-    const end = new Date(start)
-    end.setUTCDate(end.getUTCDate() + 4)
+  const demoEmails = [validator.email, alice.email, bob.email]
+  await AppDataSource.getRepository(User).delete({ email: Not(In(demoEmails)) })
 
-    await requests.save(
-      requests.create({
-        userId: alice.id,
-        startDate: start.toISOString().slice(0, 10),
-        endDate: end.toISOString().slice(0, 10),
-        reason: 'Family trip',
-        status: 'pending',
-        comments: null,
-      }),
-    )
-  }
+  const requests = AppDataSource.getRepository(VacationRequest)
+  await requests.createQueryBuilder().delete().execute()
+  await requests.save([
+    requests.create({
+      userId: alice.id,
+      ...stay(14, 5),
+      reason: 'Family trip',
+      status: 'pending',
+      comments: null,
+    }),
+    requests.create({
+      userId: alice.id,
+      ...stay(45, 5),
+      reason: 'Winter holiday',
+      status: 'approved',
+      comments: null,
+    }),
+    requests.create({
+      userId: alice.id,
+      ...stay(75, 4),
+      reason: 'Conference',
+      status: 'rejected',
+      comments: 'Overlaps a team deadline.',
+    }),
+    requests.create({
+      userId: bob.id,
+      ...stay(21, 5),
+      reason: 'School break',
+      status: 'pending',
+      comments: null,
+    }),
+  ])
+
+  const seeded = await requests.find({ order: { startDate: 'ASC' }, relations: { user: true } })
 
   console.log('Seed complete')
   console.log(`  validator: validator@example.com / ${DEMO_PASSWORD} (id=${validator.id})`)
   console.log(`  requester: alice@example.com / ${DEMO_PASSWORD} (id=${alice.id})`)
   console.log(`  requester: bob@example.com / ${DEMO_PASSWORD} (id=${bob.id})`)
+  for (const request of seeded) {
+    console.log(
+      `  ${request.user.name}: ${request.status} ${request.startDate}–${request.endDate} ${request.reason}`,
+    )
+  }
 
   await AppDataSource.destroy()
 }

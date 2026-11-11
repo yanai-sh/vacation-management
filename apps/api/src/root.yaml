@@ -107,3 +107,11 @@ paths:
       responses:
         '200':
           description: User list
+
+  /team/vacation-requests:
+    get:
+      x-handler: handlers/vacations#getTeamVacationRequests
+      summary: Team vacation planning list
+      responses:
+        '200':
+          description: Team requests

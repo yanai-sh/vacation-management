@@ -19,6 +19,7 @@ export class HandlerRegistry {
 			"handlers/vacations#deleteOwnVacationRequest": __cef_handlers_vacations.deleteOwnVacationRequest,
 			"handlers/vacations#getOwnVacationRequests": __cef_handlers_vacations.getOwnVacationRequests,
 			"handlers/vacations#getRequesterUsers": __cef_handlers_vacations.getRequesterUsers,
+			"handlers/vacations#getTeamVacationRequests": __cef_handlers_vacations.getTeamVacationRequests,
 			"handlers/vacations#getValidatorVacationRequests": __cef_handlers_vacations.getValidatorVacationRequests,
 			"handlers/vacations#parseCreateVacationInput": __cef_handlers_vacations.parseCreateVacationInput,
 			"handlers/vacations#parseRejectVacationInput": __cef_handlers_vacations.parseRejectVacationInput,
