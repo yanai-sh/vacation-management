@@ -13,15 +13,24 @@ const user = computed(() => store.state.auth.user)
 const role = computed(() => user.value?.role)
 
 const navItems = computed<NavigationMenuItem[]>(() => {
-  if (role.value !== 'requester') return []
-  return [
-    {
+  const items: NavigationMenuItem[] = []
+  if (role.value === 'requester') {
+    items.push({
       label: 'My requests',
       icon: 'i-lucide-calendar-plus',
       to: '/requester',
       active: route.name === 'requester',
-    },
-  ]
+    })
+  }
+  if (role.value === 'validator') {
+    items.push({
+      label: 'Review',
+      icon: 'i-lucide-clipboard-check',
+      to: '/validator',
+      active: route.name === 'validator',
+    })
+  }
+  return items
 })
 
 async function logout() {
@@ -45,14 +54,12 @@ async function logout() {
         </div>
         <div class="flex shrink-0 items-center gap-1 sm:gap-2">
           <UNavigationMenu
-            v-if="navItems.length"
             :items="navItems"
             color="primary"
             variant="pill"
             class="hidden sm:flex"
           />
           <UNavigationMenu
-            v-if="navItems.length"
             :items="navItems"
             color="primary"
             variant="pill"

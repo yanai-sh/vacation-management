@@ -20,3 +20,10 @@ export interface VacationRequest {
   updatedAt: string
   user?: User
 }
+
+export interface PaginatedVacationRequests {
+  items: VacationRequest[]
+  total: number
+  page: number
+  pageSize: number
+}

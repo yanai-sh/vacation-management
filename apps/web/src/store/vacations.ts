@@ -1,10 +1,28 @@
 import type { Module } from 'vuex'
-import { cancelRequest, createRequest, fetchOwnRequests } from '@/api/vacations'
-import type { VacationRequest } from '@/types'
+import {
+  approveRequest,
+  cancelRequest,
+  createRequest,
+  fetchOwnRequests,
+  fetchRequesterUsers,
+  fetchValidatorRequests,
+  rejectRequest,
+} from '@/api/vacations'
+import type { User, VacationRequest, VacationStatus } from '@/types'
+import { pageAfterEmpty } from '@/utils/paging'
 import type { RootState } from './index'
+
+let validatorLoad = 0
 
 export interface VacationsState {
   ownItems: VacationRequest[]
+  validatorItems: VacationRequest[]
+  requesterUsers: User[]
+  total: number
+  page: number
+  pageSize: number
+  statusFilter: VacationStatus | ''
+  userFilter: number | ''
   loading: boolean
   error: string | null
 }
@@ -13,12 +31,33 @@ export const vacationsModule: Module<VacationsState, RootState> = {
   namespaced: true,
   state: (): VacationsState => ({
     ownItems: [],
+    validatorItems: [],
+    requesterUsers: [],
+    total: 0,
+    page: 1,
+    pageSize: 10,
+    statusFilter: '',
+    userFilter: '',
     loading: false,
     error: null,
   }),
   mutations: {
     setOwnItems(state, items: VacationRequest[]) {
       state.ownItems = items
+    },
+    setValidatorItems(state, payload: { items: VacationRequest[]; total: number }) {
+      state.validatorItems = payload.items
+      state.total = payload.total
+    },
+    setRequesterUsers(state, users: User[]) {
+      state.requesterUsers = users
+    },
+    setPage(state, page: number) {
+      state.page = page
+    },
+    setFilters(state, filters: { statusFilter: VacationStatus | ''; userFilter: number | '' }) {
+      state.statusFilter = filters.statusFilter
+      state.userFilter = filters.userFilter
     },
     setLoading(state, loading: boolean) {
       state.loading = loading
@@ -47,6 +86,40 @@ export const vacationsModule: Module<VacationsState, RootState> = {
     async cancel({ dispatch }, id: number) {
       await cancelRequest(id)
       await dispatch('loadOwn')
+    },
+    async loadValidator({ commit, state }) {
+      const seq = ++validatorLoad
+      commit('setLoading', true)
+      commit('setError', null)
+      try {
+        const query = {
+          status: state.statusFilter,
+          userId: state.userFilter,
+          pageSize: state.pageSize,
+        }
+        let data = await fetchValidatorRequests({ ...query, page: state.page })
+        if (seq !== validatorLoad) return
+        const nextPage = pageAfterEmpty(state.page, state.pageSize, data.total, data.items.length)
+        if (nextPage != null) {
+          commit('setPage', nextPage)
+          data = await fetchValidatorRequests({ ...query, page: nextPage })
+          if (seq !== validatorLoad) return
+        }
+        commit('setValidatorItems', { items: data.items, total: data.total })
+      } finally {
+        if (seq === validatorLoad) commit('setLoading', false)
+      }
+    },
+    async loadRequesterUsers({ commit }) {
+      commit('setRequesterUsers', await fetchRequesterUsers())
+    },
+    async approve({ dispatch }, id: number) {
+      await approveRequest(id)
+      await dispatch('loadValidator')
+    },
+    async reject({ dispatch }, payload: { id: number; comment: string }) {
+      await rejectRequest(payload.id, payload.comment)
+      await dispatch('loadValidator')
     },
   },
 }

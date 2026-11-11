@@ -6,6 +6,10 @@ export type LoginFormState = {
   password?: string
 }
 
+export type RejectFormState = {
+  comment?: string
+}
+
 export type VacationFormState = {
   startDate?: CalendarDate
   endDate?: CalendarDate
@@ -29,6 +33,13 @@ export function validateLoginForm(state: Partial<LoginFormState>): FormError[] {
   }
 
   return errors
+}
+
+export function validateRejectForm(state: Partial<RejectFormState>): FormError[] {
+  if (!state.comment?.trim()) {
+    return [{ name: 'comment', message: 'A rejection comment is required' }]
+  }
+  return []
 }
 
 export function validateVacationForm(

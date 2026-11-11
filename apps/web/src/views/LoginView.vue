@@ -35,7 +35,7 @@ async function onSubmit(event: FormSubmitEvent<LoginFormState>) {
     if (redirect.startsWith('/') && !redirect.startsWith('//')) {
       await router.push(redirect)
     } else {
-      await router.push({ name: user.role === 'requester' ? 'requester' : 'home' })
+      await router.push({ name: user.role === 'validator' ? 'validator' : 'requester' })
     }
     toast.add({
       title: 'Signed in',

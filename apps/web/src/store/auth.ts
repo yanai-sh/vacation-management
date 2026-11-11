@@ -20,7 +20,9 @@ export const authModule: Module<AuthState, RootState> = {
     error: null,
   }),
   getters: {
-    isAuthenticated: (state) => Boolean(state.token),
+    isAuthenticated: (state) =>
+      Boolean(state.token) &&
+      (state.user?.role === 'requester' || state.user?.role === 'validator'),
     role: (state) => state.user?.role ?? null,
   },
   mutations: {

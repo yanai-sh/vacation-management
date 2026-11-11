@@ -15,6 +15,8 @@ declare module 'vue' {
     ConfirmModal: typeof import('./src/components/ConfirmModal.vue')['default']
     DateRangeField: typeof import('./src/components/DateRangeField.vue')['default']
     OwnRequestList: typeof import('./src/components/OwnRequestList.vue')['default']
+    RejectModal: typeof import('./src/components/RejectModal.vue')['default']
+    ReviewQueue: typeof import('./src/components/ReviewQueue.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StatusBadge: typeof import('./src/components/StatusBadge.vue')['default']
@@ -32,7 +34,9 @@ declare module 'vue' {
     UInput: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Input.vue')['default']
     UModal: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Modal.vue')['default']
     UNavigationMenu: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/NavigationMenu.vue')['default']
+    UPagination: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Pagination.vue')['default']
     UPopover: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Popover.vue')['default']
+    USelect: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Select.vue')['default']
     UTextarea: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Textarea.vue')['default']
     VacationRequestForm: typeof import('./src/components/VacationRequestForm.vue')['default']
   }

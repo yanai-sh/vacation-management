@@ -1,6 +1,6 @@
 import { CalendarDate } from '@internationalized/date'
 import { describe, expect, it } from 'vitest'
-import { validateLoginForm, validateVacationForm } from './formValidation'
+import { validateLoginForm, validateRejectForm, validateVacationForm } from './formValidation'
 
 describe('validateLoginForm', () => {
   it('requires email and password', () => {
@@ -13,6 +13,14 @@ describe('validateLoginForm', () => {
   it('rejects malformed email', () => {
     expect(validateLoginForm({ email: 'not-an-email', password: 'x' })).toEqual([
       { name: 'email', message: 'Enter a valid email address' },
+    ])
+  })
+})
+
+describe('validateRejectForm', () => {
+  it('requires a non-empty comment', () => {
+    expect(validateRejectForm({ comment: '   ' })).toEqual([
+      { name: 'comment', message: 'A rejection comment is required' },
     ])
   })
 })
