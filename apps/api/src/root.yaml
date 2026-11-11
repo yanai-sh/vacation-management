@@ -1,0 +1,25 @@
+openapi: 3.0.3
+info:
+  title: Vacation Management API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      x-handler: handlers/health#getHealth
+      summary: Health check including database connectivity
+      responses:
+        '200':
+          description: Service is healthy
+        '503':
+          description: Service is degraded
+
+  /echo:
+    post:
+      x-handler: handlers/echo#postEcho
+      x-inputParser: handlers/echo#parseEchoInput
+      summary: Echo a message from the request body
+      responses:
+        '200':
+          description: Echo response
+        '400':
+          description: Invalid input
