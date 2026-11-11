@@ -4,6 +4,9 @@ import { User } from './entities/User'
 import { VacationRequest } from './entities/VacationRequest'
 import { InitialFoundation1762800000000 } from './migrations/1762800000000-InitialFoundation'
 import { CreateDomainSchema1762810000000 } from './migrations/1762810000000-CreateDomainSchema'
+import { AddOverlapExclusion1762820000000 } from './migrations/1762820000000-AddOverlapExclusion'
+import { AllowOneDayStay1762830000000 } from './migrations/1762830000000-AllowOneDayStay'
+import { RequireEndAfterStart1762840000000 } from './migrations/1762840000000-RequireEndAfterStart'
 
 function requiredEnv(name: string): string {
   const value = process.env[name]
@@ -23,7 +26,13 @@ const AppDataSource = new DataSource({
   synchronize: false,
   logging: false,
   entities: [User, VacationRequest],
-  migrations: [InitialFoundation1762800000000, CreateDomainSchema1762810000000],
+  migrations: [
+    InitialFoundation1762800000000,
+    CreateDomainSchema1762810000000,
+    AddOverlapExclusion1762820000000,
+    AllowOneDayStay1762830000000,
+    RequireEndAfterStart1762840000000,
+  ],
   migrationsTableName: 'typeorm_migrations',
   migrationsRun: false,
 })

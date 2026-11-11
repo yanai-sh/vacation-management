@@ -44,3 +44,31 @@ paths:
           description: Current user
         '401':
           description: Unauthorized
+
+  /vacation-requests:
+    get:
+      x-handler: handlers/vacations#getOwnVacationRequests
+      summary: List the authenticated requester's vacation requests
+      responses:
+        '200':
+          description: Request list
+    post:
+      x-handler: handlers/vacations#postVacationRequest
+      x-inputParser: handlers/vacations#parseCreateVacationInput
+      summary: Submit a vacation request
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Validation error
+        '409':
+          description: Overlap conflict
+
+  /vacation-requests/:id:
+    delete:
+      x-handler: handlers/vacations#deleteOwnVacationRequest
+      x-inputParser: handlers/vacations#parseVacationIdInput
+      summary: Cancel own pending vacation request
+      responses:
+        '200':
+          description: Cancelled
