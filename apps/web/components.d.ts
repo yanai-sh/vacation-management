@@ -11,12 +11,19 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppShell: typeof import('./src/components/AppShell.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UAlert: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Alert.vue')['default']
     UApp: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/App.vue')['default']
     UBadge: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Badge.vue')['default']
     UButton: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Button.vue')['default']
     UCalendar: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Calendar.vue')['default']
+    UCard: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Card.vue')['default']
+    UColorModeButton: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/color-mode/ColorModeButton.vue')['default']
+    UForm: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Form.vue')['default']
+    UFormField: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/FormField.vue')['default']
+    UInput: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Input.vue')['default']
     UPopover: typeof import('./../../node_modules/.pnpm/@nuxt+ui@4.12.0_977f06c8429ade75e211cbe042d1be05/node_modules/@nuxt/ui/dist/runtime/components/Popover.vue')['default']
   }
 }

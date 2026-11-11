@@ -1,7 +1,10 @@
+<script setup lang="ts">
+import AppShell from '@/components/AppShell.vue'
+</script>
+
 <template>
-  <main class="mx-auto flex min-h-screen max-w-lg flex-col justify-center gap-3 px-6">
-    <p class="text-sm text-dimmed">Vacation Management</p>
-    <h1 class="text-3xl font-semibold tracking-tight">Time off, in one place</h1>
-    <p class="text-muted">Employees request leave. Validators approve it.</p>
-  </main>
+  <AppShell>
+    <h1 class="text-2xl font-semibold tracking-tight text-highlighted">Time off, in one place</h1>
+    <p class="mt-2 max-w-lg text-muted">Employees request leave. Validators approve it.</p>
+  </AppShell>
 </template>
