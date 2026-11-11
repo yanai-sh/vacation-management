@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+dist-ssr/
+coverage/
+*.tsbuildinfo
+
+# Logs and caches
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+*.local
+
+# Editor / OS
+.DS_Store
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Test artifacts
+__screenshots__/
+/cypress/videos/
+/cypress/screenshots/
+
+# Vite
+*.timestamp-*-*.mjs
+
+# Database / Docker volumes (if bound locally)
+.docker-data/
+*.sql.gz
+
+# Local pnpm store fallback (when hard-linking from the global store fails)
+node_modules/.pnpm-store/
+
+# Local agent / editor scaffolding
+.agents/
+.cursor/
+AGENTS.md
+skills-lock.json
+*.plan.md
+
+# Local Playwright suite. Not part of the remote repo.
+/local-e2e/

@@ -1,0 +1,8 @@
+packages:
+  - 'apps/*'
+
+# aws-sdk: CEF → aws-lambda; esbuild: Vite toolchain
+allowBuilds:
+  aws-sdk: true
+  esbuild: true
+  vue-demi: true
