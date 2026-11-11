@@ -189,7 +189,13 @@ export async function listTeamVacationRequests() {
     relations: { user: true },
     order: { startDate: 'ASC' },
   })
-  return items.map(serialize)
+  return items.map((request) => ({
+    id: request.id,
+    status: request.status,
+    startDate: request.startDate,
+    endDate: request.endDate,
+    user: request.user ? { name: request.user.name } : undefined,
+  }))
 }
 
 export async function cancelOwnPendingRequest(auth: AuthUser, id: number) {

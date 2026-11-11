@@ -27,20 +27,7 @@ const columns = computed(() => {
     cols.push({ id: 'employee', header: 'Employee' })
   }
 
-  cols.push(
-    { id: 'status', header: 'Status' },
-    { id: 'dates', header: 'Dates' },
-    {
-      accessorKey: 'reason',
-      header: 'Reason',
-      cell: ({ row }) => row.original.reason || '—',
-    },
-    {
-      accessorKey: 'comments',
-      header: 'Comments',
-      cell: ({ row }) => row.original.comments || '—',
-    },
-  )
+  cols.push({ id: 'status', header: 'Status' }, { id: 'dates', header: 'Dates' })
 
   if (props.showActions || props.showCancel) {
     cols.push({ id: 'actions', header: 'Actions' })
@@ -67,7 +54,7 @@ const columns = computed(() => {
       class="min-w-160 text-sm"
     >
       <template #employee-cell="{ row }">
-        {{ row.original.user?.name ?? String(row.original.userId) }}
+        {{ row.original.user?.name ?? '—' }}
       </template>
       <template #dates-cell="{ row }">
         {{ formatStay(row.original.startDate, row.original.endDate).range }}

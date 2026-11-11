@@ -13,17 +13,6 @@ paths:
         '503':
           description: Service is degraded
 
-  /echo:
-    post:
-      x-handler: handlers/echo#postEcho
-      x-inputParser: handlers/echo#parseEchoInput
-      summary: Echo a message from the request body
-      responses:
-        '200':
-          description: Echo response
-        '400':
-          description: Invalid input
-
   /auth/login:
     post:
       x-handler: handlers/auth#postLogin
@@ -111,7 +100,7 @@ paths:
   /team/vacation-requests:
     get:
       x-handler: handlers/vacations#getTeamVacationRequests
-      summary: Team vacation planning list
+      summary: Pending and approved time off (name, status, and dates)
       responses:
         '200':
           description: Team requests

@@ -52,18 +52,18 @@ Run tests with `pnpm test`.
 
 ## Technical decisions
 
-- One submit path: `VacationRequestForm.vue` emits the dates, `RequesterView.vue` dispatches `vacations/create` (`apps/web/src/store/vacations.ts`), and that action calls `createRequest` in the Axios client (`apps/web/src/api/vacations.ts`). `POST /vacation-requests` in `apps/api/src/root.yaml` uses `x-inputParser` `handlers/vacations#parseCreateVacationInput`, handler `postVacationRequest`, and `createVacationRequest` in `apps/api/src/application/vacationService.ts`. A `CommonEvent` is the request, the parser is the boundary, the handler is the command, and the service owns the rule. Create returns 201.
-- `GET /validator/vacation-requests` uses `parseValidatorVacationRequestsInput`.
-- CEF OpenAPI routes (`apps/api/src/root.yaml`) call thin handlers; business rules live in application services.
-- JWT HS256 auth; role comes from the signed token, never from the client body.
-- Vacation rules enforced on the server (date order, no past starts, no overlap, approved immutable, reject comment required). Past dates use the local calendar day (browser zone in the UI; API host/`TZ` zone server-side).
-- Approve and reject stay POST actions (`/validator/vacation-requests/:id/approve` and `.../reject`) because approval re-checks overlap and rejection requires a comment.
-- Schema changes use TypeORM migrations (`synchronize` is off). The password column is `password_hash`. Migration `AddValidatorListIndexes1762850000000` adds indexes for the validator list sort (`status, created_at DESC`, `user_id, created_at DESC`, and `created_at DESC`). On an 18-row table, `EXPLAIN` still sequential-scans.
-- The requests table scrolls inside its card (`RequestTable.vue`: card body `overflow-x-auto`, table root `overflow-visible`).
-- UI uses Tailwind with Nuxt UI (MIT) for form/table/dialog primitives.
+- A CommonEvent is the request, the parser is the boundary, the handler is the command, and the service owns the rule.
+- The role is copied from the database into an HS256 token at login. The client never sends a role.
+- Approve and reject stay POST because approval re-checks overlap and rejection carries a comment.
+- Overlap is a GiST exclusion constraint. Approve, reject, and cancel lock the row.
+- Schema changes are TypeORM migrations (`synchronize` is off). Passwords are stored in `password_hash`.
+- Team is a shared calendar of pending and approved dates (employee name, status, and dates), not another copy of the request record.
 
 ## Known limitations
 
-- No refresh tokens (8-hour access token).
+- Access tokens last 8 hours. There is no refresh token and no revocation, so a role change waits until the token expires.
 - “No past requests” uses the local calendar date (browser zone in the UI; API host/`TZ` zone server-side).
-- CEF local server listens on port 8888 by default.
+- A stay must end after it starts, so a single calendar day is not a valid request.
+- Cancel deletes the pending row. There is no cancelled status.
+- Only the validator list is paginated. The requester’s own list and the team calendar return every matching row.
+- The local API listens on port 8888.
