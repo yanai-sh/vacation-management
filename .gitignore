@@ -49,6 +49,7 @@ node_modules/.pnpm-store/
 # Local agent / editor scaffolding
 .agents/
 .cursor/
+.interview/
 AGENTS.md
 skills-lock.json
 *.plan.md

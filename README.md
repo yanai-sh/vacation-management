@@ -61,6 +61,8 @@ Run tests with `pnpm test`.
 
 ## Known limitations
 
+Deeper security and hardening notes (including stolen JWT / `localStorage` risk): [docs/what-i-would-improve.md](docs/what-i-would-improve.md).
+
 - Access tokens last 8 hours. There is no refresh token and no revocation, so a role change waits until the token expires.
 - “No past requests” uses the local calendar date (browser zone in the UI; API host/`TZ` zone server-side).
 - A stay must end after it starts, so a single calendar day is not a valid request.
